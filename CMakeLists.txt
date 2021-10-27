@@ -1,0 +1,29 @@
+cmake_minimum_required(VERSION 3.1.3)
+project (test)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_MACOSX_BUNDLE YES)
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO")
+set(CMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "123456789A" CACHE INTERNAL "")
+
+
+
+add_library(libprotobuf SHARED IMPORTED GLOBAL)
+set_target_properties(libprotobuf PROPERTIES
+        IMPORTED_LOCATION_RELEASE "./libprotobuf-lite-fail.dylib"
+        IMPORTED_LOCATION_DEBUG "./libprotobuf-lite-fail.dylib"
+        )
+set_target_properties(libprotobuf PROPERTIES XCODE_ATTRIBUTE_ENABLE_BITCODE "NO")
+
+add_library (test SHARED test.cpp test.pb.cc)
+target_include_directories (test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+set_target_properties(test PROPERTIES
+        XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY ""
+        XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
+        XCODE_ATTRIBUTE_ENABLE_BITCODE "NO"
+        OUTPUT_NAME "test")
+
+target_link_libraries(test PUBLIC libprotobuf)
