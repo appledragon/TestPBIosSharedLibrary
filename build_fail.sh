@@ -7,6 +7,7 @@ if test -f "/Applications/CMake.app/Contents/bin/cmake"; then
 fi
 
 rm -rf build
+cp CMakeLists.txt.fail CMakeLists.txt
 $cmake -G Xcode \
 	-DCMAKE_SYSTEM_NAME=iOS \
      	-DIOS_PLATFORM=OS \
